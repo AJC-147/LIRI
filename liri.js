@@ -6,9 +6,12 @@ var nodeSpotify = require('node-spotify-api');
 var inquirer = require('inquirer')
 var bandsintown = require('bandsintown')('codingbootcamp');
 
-var keys = require("./keys.js")
+//var keys = require("./keys.js")
 
-var spotify = new nodeSpotify(keys.spotify);
+var spotify = new nodeSpotify({
+  id: "7946ab7703324615be4cbb2b2f03dfbd",
+  secret: "d9473ffbc0b44af9b8ec0ad532d244d7"
+});
 
 inquirer.prompt([
 
@@ -40,7 +43,12 @@ inquirer.prompt([
   .getArtistEventList(concertEntry.band)
   .then(function(events) {
                     
-                console.log(events);
+//                console.log(events[0]);
+                    console.log(events[0].title);
+                    console.log("Venue: " + events[0].venue.place);
+                    console.log("Date: " + events[0].datetime)
+                                
+//                    console.log(moment(events[0].datetime)).format('L');
   });
                 
             });
@@ -68,7 +76,7 @@ inquirer.prompt([
     return console.log('Error occurred: ' + err);
   }
  
-console.log(data); 
+console.log(data[0]); 
 console.log("Artist: " + data.tracks.artist); 
 });
                 
@@ -88,19 +96,36 @@ console.log("Artist: " + data.tracks.artist);
 
         ])
                 .then(function (movieEntry) {
-
+//                    var movieTitle = "Mr. Nobody";
                     var movieTitle = movieEntry.movie;
                     var queryURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + movieTitle;
+                
+                if (movieEntry.movie = "") {
+                    console.log("Mr. Nobody")
+                   var movieTitle = "Mr. Nobody";
+                }
+                
+                else {
 
                     request(queryURL, function (err, res, body) {
 
                         if (!err && res.statusCode === 200) {
 
 
-                            console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+//                            console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+//                            console.log(JSON.parse(body));
+                            console.log("Title: " + JSON.parse(body).Title);
+                            console.log("Year: " + JSON.parse(body).Year);
+                            console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+                            console.log("Rotten Tomatoes: " + JSON.parse(body).Ratings[1].Value);
+                            console.log("Country: " + JSON.parse(body).Country);
+                            console.log("Language: " + JSON.parse(body).Language[0]);
+                            console.log("Plot: " + JSON.parse(body).Plot);
+                            console.log("Starring: " + JSON.parse(body).Actors);
                         }
 
                     });
+                }
                 });
 
         } 
